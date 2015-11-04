@@ -5,5 +5,27 @@
   <%= @shipment.delivery_date %>
 </p>
 
+<p>
+  <strong>Products:</strong>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @shipment.products.each do |product| %>
+        <tr>
+          <td><%= product.id %></td>
+          <td><%= product.description %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</p>
+
+
 <%= link_to 'Edit', edit_shipment_path(@shipment) %> |
 <%= link_to 'Back', shipments_path %>
