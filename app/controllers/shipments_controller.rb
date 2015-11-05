@@ -24,42 +24,22 @@ class ShipmentsController < ApplicationController
   end
 
   # POST /shipments
-  # POST /shipments.json
   def create
     @shipment = Shipment.new(shipment_params)
-    respond_to do |format|
-      if @shipment.save
-        format.html { redirect_to @shipment, notice: 'Shipment was successfully created.' }
-        format.json { render :show, status: :created, location: @shipment }
-      else
-        format.html { render :new }
-        format.json { render json: @shipment.errors, status: :unprocessable_entity }
-      end
-    end
+    StoreWorker.perform_async(@shipment.id) if @shipment.save
+    redirect_to @shipment, notice: 'Shipment was successfully created.'
   end
 
   # PATCH/PUT /shipments/1
-  # PATCH/PUT /shipments/1.json
   def update
-    respond_to do |format|
-      if @shipment.update(shipment_params)
-        format.html { redirect_to @shipment, notice: 'Shipment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @shipment }
-      else
-        format.html { render :edit }
-        format.json { render json: @shipment.errors, status: :unprocessable_entity }
-      end
-    end
+    @shipment.update(shipment_params)
+    redirect_to @shipment, notice: 'Shipment was successfully updated.' }
   end
 
   # DELETE /shipments/1
-  # DELETE /shipments/1.json
   def destroy
     @shipment.destroy
-    respond_to do |format|
-      format.html { redirect_to shipments_url, notice: 'Shipment was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to shipments_url, notice: 'Shipment was successfully destroyed.' }
   end
 
   private
