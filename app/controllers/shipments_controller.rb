@@ -1,6 +1,8 @@
 class ShipmentsController < ApplicationController
   before_action :set_shipment, only: [:show, :edit, :update, :destroy]
 
+  protect_from_forgery :except => [:update_from_xml]
+
   # GET /shipments
   # GET /shipments.json
   def index
@@ -32,14 +34,19 @@ class ShipmentsController < ApplicationController
 
   # PATCH/PUT /shipments/1
   def update
-    @shipment.update(shipment_params)
-    redirect_to @shipment, notice: 'Shipment was successfully updated.' }
+    @shipment.update_attributes(shipment_params)
+    redirect_to @shipment, notice: 'Shipment was successfully updated.'
+  end
+
+  def update_from_xml
+    storage = { id: Random.new.rand(0..5) }
+    render xml: storage, root: "storage"
   end
 
   # DELETE /shipments/1
   def destroy
     @shipment.destroy
-    redirect_to shipments_url, notice: 'Shipment was successfully destroyed.' }
+    redirect_to shipments_url, notice: 'Shipment was successfully destroyed.'
   end
 
   private

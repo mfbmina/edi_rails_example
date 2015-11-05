@@ -11,19 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104012635) do
-
-  create_table "as", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "posts", force: :cascade do |t|
-    t.text     "message"
-    t.text     "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema.define(version: 20151105034615) do
 
   create_table "products", force: :cascade do |t|
     t.text     "description"
@@ -37,14 +25,9 @@ ActiveRecord::Schema.define(version: 20151104012635) do
 
   create_table "shipments", force: :cascade do |t|
     t.date     "delivery_date"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "shippments", force: :cascade do |t|
-    t.date     "delivery_date"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "storage_number"
   end
 
 end

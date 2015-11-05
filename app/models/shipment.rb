@@ -3,7 +3,8 @@ class Shipment < ActiveRecord::Base
 
   accepts_nested_attributes_for :products, reject_if: proc { |attributes| attributes['description'].blank? }
 
-  def update_from_xml(xml)
-    # xml magic here
+  def update_from_xml(string)
+    hash = Hash.from_xml(string)
+    update_attribute(:storage_number, hash["storage"]["id"])
   end
 end
