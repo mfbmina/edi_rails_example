@@ -1,5 +1,57 @@
-<h1>New Shipment</h1>
+<%- model_class = Shipment -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize %></h1>
+</div>
+<%= nested_form_for @shipment, :html => { :class => "form-horizontal shipment" } do |f| %>
 
-<%= render 'form' %>
+    <% if @shipment.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@shipment.errors.count, "error") %> prohibited this shipment from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @shipment.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
 
-<%= link_to 'Back', shipments_path %>
+  <div class="control-group">
+    <%= f.label :delivery_date, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.date_select :delivery_date, :class => 'form-control' %>
+    </div>
+    <%= error_span(@shipment[:delivery_date]) %>
+  </div>
+
+  <%= f.fields_for :products do |product_f| %>
+    <div class="control-group">
+      <%= product_f.label "Product description", :class => 'control-label' %>
+      <div class="controls">
+        <%= product_f.text_area :description %><br>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= product_f.label "Product value", :class => 'control-label' %>
+      <div class="controls">
+        <%= product_f.text_field :value %><br>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= product_f.label "Actions", :class => 'control-label' %>
+      <div class="controls">
+        <%= product_f.link_to_remove "Remove product", :class => 'btn btn-default' %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+              shipments_path, :class => 'btn btn-default' %>
+    <%= f.link_to_add "Add product", :products, :class => 'btn btn-default' %>
+  </div>
+<% end %>
